@@ -6,7 +6,6 @@ import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Card, CardContent } from "@/components/ui/card"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Instagram, MapPin, Clock } from "lucide-react"
 import Image from "next/image"
@@ -126,12 +125,10 @@ export default function TomanWaitlist() {
         <div className="space-y-4 text-sm text-gray-300 leading-relaxed">
           <p className="font-semibold text-white">À PROPOS</p>
           <p>
-            Envie de faire la fête dans un loft sans exploser ton budget ? On t'a concocté une soirée comme tu les aimes
-            : une ambiance chill et festive, de la bonne musique qui te fait bouger jusqu'au bout de la nuit.
+            {"Envie de faire la fête dans un loft sans exploser ton budget ? On t'a concocté une soirée comme tu les aimes : une ambiance chill et festive, de la bonne musique qui te fait bouger jusqu'au bout de la nuit."}
           </p>
           <p>
-            Des boissons fraîches et des snacks à volonté pour garder la forme. Que tu viennes pour danser, discuter ou
-            juste chiller avec tes potes, tu trouveras l'énergie qu'il te faut pour passer un vrai bon moment.
+            {"Des boissons fraîches et des snacks à volonté pour garder la forme. Que tu viennes pour danser, discuter ou juste chiller avec tes potes, tu trouveras l'énergie qu'il te faut pour passer un vrai bon moment."}
           </p>
         </div>
       </div>
