@@ -20,9 +20,9 @@ export default function ConfirmationPage() {
     }
   }, [])
 
-  const handleBackToForm = () => {
+  /*const handleBackToForm = () => {
     window.location.reload()
-  }
+  }*/
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 text-white">
@@ -99,13 +99,13 @@ export default function ConfirmationPage() {
               </Button>
             </a>
 
-            <Button
+            {/*<Button
               onClick={handleBackToForm}
               variant="outline"
               className="w-full bg-white/10 border-white/20 text-white hover:bg-white/20 font-medium py-3"
             >
               Nouvelle inscription
-            </Button>
+            </Button>*/}
           </div>
         </div>
       </div>
