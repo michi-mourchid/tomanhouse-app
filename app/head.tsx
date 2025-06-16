@@ -7,7 +7,7 @@ import Head from "next/head"
   {/* --- Balises Open Graph pour les réseaux sociaux --- */}
   <meta property="og:title" content="Toman House" />
   <meta property="og:description" content="Soirées privées Toman : vibes, musique, fashion. Rejoins-nous." />
-  <meta property="og:image" content="/logo-toman-bleu.png" />
+  <meta property="og:image" content="https://www.tomanhouse.app/logo-toman-bleu.png" />
   <meta property="og:url" content="https://www.tomanhouse.app" />
   <meta property="og:type" content="website" />
 
