@@ -19,10 +19,14 @@ export default function TomanWaitlist() {
   const [formData, setFormData] = useState({
     firstName: "",
     guestName: "",
+    guestInstagram: "",
     email: "",
+    instagram: "",
     followConfirm: false,
   })
   const [hasGuest, setHasGuest] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitError, setSubmitError] = useState("")
 
   useEffect(() => {
     const checkIsMobile = () => {
@@ -43,10 +47,42 @@ export default function TomanWaitlist() {
 
   const router = useRouter()
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log({ ...formData, gender: selectedGender, events: selectedDates })
-    router.push("/confirmation")
+    setIsSubmitting(true)
+    setSubmitError("")
+
+    try {
+      const response = await fetch("/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          firstName: formData.firstName,
+          email: formData.email,
+          instagram: formData.instagram,
+          gender: selectedGender,
+          hasGuest: hasGuest,
+          guestName: formData.guestName,
+          guestInstagram: formData.guestInstagram,
+          selectedEvents: selectedDates,
+        }),
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        router.push("/confirmation")
+      } else {
+        setSubmitError(data.error || "Une erreur est survenue")
+      }
+    } catch (error) {
+      console.error("Erreur lors de la soumission:", error)
+      setSubmitError("Erreur de connexion. Veuillez réessayer.")
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   // Desktop/Tablet version
@@ -130,10 +166,14 @@ export default function TomanWaitlist() {
         <div className="space-y-4 text-sm text-gray-300 leading-relaxed">
           <p className="font-semibold text-white">À PROPOS</p>
           <p>
-            {"Envie de faire la fête dans un loft sans exploser ton budget ? On t'a concocté une soirée comme tu les aimes : une ambiance chill et festive, de la bonne musique qui te fait bouger jusqu'au bout de la nuit."}
+            {
+              "Envie de faire la fête dans un loft sans exploser ton budget ? On t'a concocté une soirée comme tu les aimes : une ambiance chill et festive, de la bonne musique qui te fait bouger jusqu'au bout de la nuit."
+            }
           </p>
           <p>
-            {"Des boissons fraîches et des snacks à volonté pour garder la forme. Que tu viennes pour danser, discuter ou juste chiller avec tes potes, tu trouveras l'énergie qu'il te faut pour passer un vrai bon moment."}
+            {
+              "Des boissons fraîches et des snacks à volonté pour garder la forme. Que tu viennes pour danser, discuter ou juste chiller avec tes potes, tu trouveras l'énergie qu'il te faut pour passer un vrai bon moment."
+            }
           </p>
         </div>
       </div>
@@ -169,6 +209,20 @@ export default function TomanWaitlist() {
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               className="mt-2 bg-white/10 border-white/20 text-white placeholder:text-gray-400"
               placeholder="ton@email.com"
+            />
+          </div>
+          <div>
+            <Label htmlFor="instagram" className="text-white font-medium">
+              Ton Instagram *
+            </Label>
+            <Input
+              id="instagram"
+              type="text"
+              required
+              value={formData.instagram}
+              onChange={(e) => setFormData({ ...formData, instagram: e.target.value })}
+              className="mt-2 bg-white/10 border-white/20 text-white placeholder:text-gray-400"
+              placeholder="@toninstagram"
             />
           </div>
         </div>
@@ -222,19 +276,34 @@ export default function TomanWaitlist() {
         </div>
 
         {hasGuest && (
-          <div>
-            <Label htmlFor="guestName" className="text-white font-medium">
-              Prénom de ton invité *
-            </Label>
-            <Input
-              id="guestName"
-              type="text"
-              required={hasGuest}
-              value={formData.guestName}
-              onChange={(e) => setFormData({ ...formData, guestName: e.target.value })}
-              className="mt-2 bg-white/10 border-white/20 text-white placeholder:text-gray-400"
-              placeholder="Prénom"
-            />
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="guestName" className="text-white font-medium">
+                Prénom de ton invité *
+              </Label>
+              <Input
+                id="guestName"
+                type="text"
+                required={hasGuest}
+                value={formData.guestName}
+                onChange={(e) => setFormData({ ...formData, guestName: e.target.value })}
+                className="mt-2 bg-white/10 border-white/20 text-white placeholder:text-gray-400"
+                placeholder="Prénom"
+              />
+            </div>
+            <div>
+              <Label htmlFor="guestInstagram" className="text-white font-medium">
+                Instagram de ton invité
+              </Label>
+              <Input
+                id="guestInstagram"
+                type="text"
+                value={formData.guestInstagram}
+                onChange={(e) => setFormData({ ...formData, guestInstagram: e.target.value })}
+                className="mt-2 bg-white/10 border-white/20 text-white placeholder:text-gray-400"
+                placeholder="@soninstagram"
+              />
+            </div>
           </div>
         )}
 
@@ -252,7 +321,7 @@ export default function TomanWaitlist() {
                   variant={isSelected ? "default" : "outline"}
                   onClick={() => {
                     setSelectedDates((prev) =>
-                      isSelected ? prev.filter((id) => id !== event.id) : [...prev, event.id]
+                      isSelected ? prev.filter((id) => id !== event.id) : [...prev, event.id],
                     )
                   }}
                   className={`w-full justify-start ${isSelected
@@ -265,11 +334,8 @@ export default function TomanWaitlist() {
                 </Button>
               )
             })}
-
           </div>
         </div>
-
-
 
         {/* Instagram Follow Confirmation */}
         <div className="flex items-start space-x-3">
@@ -284,20 +350,26 @@ export default function TomanWaitlist() {
             follow sinon ton maudit pro max merci que du love à bientôt
           </Label>
         </div>
-
+        {submitError && (
+          <div className="bg-red-500/20 border border-red-500/50 rounded-lg p-3">
+            <p className="text-red-200 text-sm">{submitError}</p>
+          </div>
+        )}
         {/* Submit Button */}
         <Button
           type="submit"
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 text-lg"
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 text-lg disabled:opacity-50"
           disabled={
+            isSubmitting ||
             !formData.firstName ||
             !formData.email ||
+            !formData.instagram ||
             !selectedGender ||
             selectedDates.length === 0 ||
             (hasGuest && !formData.guestName)
           }
         >
-          Participer
+          {isSubmitting ? "Inscription en cours..." : "Participer"}
         </Button>
       </form>
 
