@@ -15,6 +15,27 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "tomanhouse",
   description: "A collective built around @ music @ vibes @ fashion",
+  openGraph: {
+    title: "tomanhouse",
+    description: "A collective built around @ music @ vibes @ fashion",
+    url: "https://www.tomanhouse.app",
+    siteName: "tomanhouse",
+    images: [
+      {
+        url: "/logo-toman-bleu.png",
+        width: 1200,
+        height: 630,
+        alt: "TomanHouse 123",
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "tomanhouse",
+    description: "A collective built around @ music @ vibes @ fashion",
+    images: ["/logo-toman-bleu.png"],
+  },
 };
 
 export default function RootLayout({
