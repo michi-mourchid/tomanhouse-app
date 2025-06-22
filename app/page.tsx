@@ -10,11 +10,11 @@ export default function TomanWaitlist() {
       className="min-h-screen flex flex-col items-center justify-center text-white"
       style={{ backgroundColor: "#034098" }}
     >
-      <div className="flex flex-col items-center justify-center max-w-2xl mx-auto px-8">
+      <div className="flex flex-col items-center justify-center max-w-4xl mx-auto px-8">
         <div className="mb-12">
           <Image
-            src="/t-shirt-qrcode.png"
-            alt="T-shirt Toman avec QR Code"
+            src="/white_logo.png"
+            alt="Logo Toman Home"
             width={600}
             height={461}
             className="max-w-full h-auto"

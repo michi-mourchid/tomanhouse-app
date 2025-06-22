@@ -7,7 +7,6 @@ export async function POST(request: NextRequest) {
 
     const {
       firstName,
-      email,
       instagram,
       gender,
       hasGuest,
@@ -17,49 +16,85 @@ export async function POST(request: NextRequest) {
     } = body;
 
     // Validation des champs obligatoires
-    if (
-      !firstName ||
-      !email ||
-      !instagram ||
-      !gender ||
-      !selectedEvents?.length
-    ) {
+    if (!firstName || !instagram || !gender || !selectedEvents?.length) {
       return NextResponse.json(
         { error: "Tous les champs obligatoires doivent être remplis" },
         { status: 400 }
       );
     }
 
-    // Validation email format
+    /* Validation email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return NextResponse.json(
         { error: "Format d'email invalide" },
         { status: 400 }
       );
-    }
+    }*/
 
-    // Vérifier si l'email existe déjà
-    const { data: existingParticipant, error: checkError } =
+    // Vérifie si le participant avec ce pseudo Instagram existe
+    const { data: participantCheck, error: participantCheckError } =
       await supabaseServer
         .from("participants")
         .select("id")
-        .eq("email", email)
+        .eq(
+          "instagram",
+          instagram.startsWith("@") ? instagram : `@${instagram}`
+        )
         .single();
 
-    if (checkError && checkError.code !== "PGRST116") {
-      console.error("Erreur lors de la vérification email:", checkError);
+    if (participantCheckError && participantCheckError.code !== "PGRST116") {
+      console.error(
+        "Erreur lors de la vérification du participant:",
+        participantCheckError
+      );
       return NextResponse.json(
         { error: "Erreur lors de la vérification" },
         { status: 500 }
       );
     }
 
-    if (existingParticipant) {
-      return NextResponse.json(
-        { error: "Cet email est déjà inscrit" },
-        { status: 409 }
+    if (participantCheck) {
+      const participantId = participantCheck.id;
+
+      // Vérifier s'il est déjà inscrit à un des événements sélectionnés
+      const { data: existingEvents, error: existingEventsError } =
+        await supabaseServer
+          .from("participant_events")
+          .select("event_id")
+          .eq("participant_id", participantId);
+
+      if (existingEventsError) {
+        console.error(
+          "Erreur lors de la vérification des événements:",
+          existingEventsError
+        );
+        return NextResponse.json(
+          { error: "Erreur lors de la vérification des événements" },
+          { status: 500 }
+        );
+      }
+
+      const eventMapping: { [key: string]: number } = {
+        ob: 1,
+        driko: 2,
+        fahim: 3,
+      };
+
+      const selectedEventIds = selectedEvents.map(
+        (eventKey: string) => eventMapping[eventKey]
       );
+
+      const alreadyRegistered = existingEvents
+        .map((e) => e.event_id)
+        .filter((eventId) => selectedEventIds.includes(eventId));
+
+      if (alreadyRegistered.length > 0) {
+        return NextResponse.json(
+          { error: "Tu es déjà inscrit à cet événement." },
+          { status: 409 }
+        );
+      }
     }
 
     // Créer le participant
@@ -67,7 +102,7 @@ export async function POST(request: NextRequest) {
       .from("participants")
       .insert({
         name: firstName,
-        email: email,
+        email: "",
         instagram: instagram.startsWith("@") ? instagram : `@${instagram}`,
         gender: gender,
       })

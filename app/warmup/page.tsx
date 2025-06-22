@@ -60,7 +60,6 @@ export default function TomanWaitlist() {
         },
         body: JSON.stringify({
           firstName: formData.firstName,
-          email: formData.email,
           instagram: formData.instagram,
           gender: selectedGender,
           hasGuest: hasGuest,
@@ -95,8 +94,8 @@ export default function TomanWaitlist() {
         <div className="flex flex-col items-center justify-center max-w-2xl mx-auto px-8">
           <div className="mb-12">
             <Image
-              src="/t-shirt-qrcode.png"
-              alt="T-shirt Toman avec QR Code"
+              src="/white_logo.png"
+              alt="Logo Toman Home"
               width={600}
               height={461}
               className="max-w-full h-auto"
@@ -150,7 +149,7 @@ export default function TomanWaitlist() {
 
       {/* Event Info */}
       <div className="px-4 mb-6">
-        <h1 className="text-2xl font-bold mb-3">WARMUP 123</h1>
+        <h1 className="text-2xl font-bold mb-3">WARMUP</h1>
 
         <div className="flex items-center gap-4 mb-4 text-sm text-gray-300">
           <div className="flex items-center gap-1">
@@ -159,7 +158,7 @@ export default function TomanWaitlist() {
           </div>
           <div className="flex items-center gap-1">
             <Clock className="h-4 w-4" />
-            <span>18H30 - 22H50</span>
+            <span>19h - 23h</span>
           </div>
         </div>
 
@@ -167,12 +166,12 @@ export default function TomanWaitlist() {
           <p className="font-semibold text-white">À PROPOS</p>
           <p>
             {
-              "Envie de faire la fête dans un loft sans exploser ton budget ? On t'a concocté une soirée comme tu les aimes : une ambiance chill et festive, de la bonne musique qui te fait bouger jusqu'au bout de la nuit."
+              "Warmup, c’est pas juste un afterwork. C’est notre moment à nous. Un début de soirée posé, entre sons chill, good vibes, rires et vraies connexions. On se retrouve, on partage, on kiffe ensemble sous le soleil de l’été."
             }
           </p>
           <p>
             {
-              "Des boissons fraîches et des snacks à volonté pour garder la forme. Que tu viennes pour danser, discuter ou juste chiller avec tes potes, tu trouveras l'énergie qu'il te faut pour passer un vrai bon moment."
+              "Et quand la température chauffe, c’est nous, on vient rafraîchir l’ambiance. Ramène ta bonne humeur, ton invité, Le Toman t’attends."
             }
           </p>
         </div>
@@ -197,7 +196,7 @@ export default function TomanWaitlist() {
             />
           </div>
 
-          <div>
+          {/*<div>
             <Label htmlFor="email" className="text-white font-medium">
               Ton e-mail *
             </Label>
@@ -210,7 +209,7 @@ export default function TomanWaitlist() {
               className="mt-2 bg-white/10 border-white/20 text-white placeholder:text-gray-400"
               placeholder="ton@email.com"
             />
-          </div>
+          </div>*/}
           <div>
             <Label htmlFor="instagram" className="text-white font-medium">
               Ton Instagram *
@@ -222,7 +221,7 @@ export default function TomanWaitlist() {
               value={formData.instagram}
               onChange={(e) => setFormData({ ...formData, instagram: e.target.value })}
               className="mt-2 bg-white/10 border-white/20 text-white placeholder:text-gray-400"
-              placeholder="@toninstagram"
+              placeholder="Instagram"
             />
           </div>
         </div>
@@ -346,8 +345,8 @@ export default function TomanWaitlist() {
             className="mt-1 border-white/20 data-[state=checked]:bg-blue-600"
           />
           <Label htmlFor="followConfirm" className="text-sm text-gray-300 leading-relaxed">
-            Je certifie être follow au Toman et mon invité aussi. Ou oui, on gratte chaque follow, tchip allez follow...
-            follow sinon ton maudit pro max merci que du love à bientôt
+            Je certifie être follow au Toman, et mon +1 aussi (sinon vous rentrez pas mdrr) <br /> Oui oui, on gratte chaque follow sinon on va percer quand ?
+            Merci, que du love et à très vite !
           </Label>
         </div>
         {submitError && (
@@ -362,7 +361,6 @@ export default function TomanWaitlist() {
           disabled={
             isSubmitting ||
             !formData.firstName ||
-            !formData.email ||
             !formData.instagram ||
             !selectedGender ||
             selectedDates.length === 0 ||
