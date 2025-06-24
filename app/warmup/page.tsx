@@ -72,7 +72,9 @@ export default function TomanWaitlist() {
       const data = await response.json()
 
       if (response.ok) {
-        router.push("/confirmation")
+        // Passer l'Instagram de l'utilisateur à la page de confirmation
+        const instagramHandle = formData.instagram.startsWith("@") ? formData.instagram : `@${formData.instagram}`
+        router.push(`/confirmation?instagram=${encodeURIComponent(instagramHandle)}`)
       } else {
         setSubmitError(data.error || "Une erreur est survenue")
       }
